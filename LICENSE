@@ -1,0 +1,59 @@
+Adam AI — licensing and scope
+=============================
+
+This repository is a genuine GitHub fork of:
+
+    https://github.com/gazijarin/AdamAI
+
+Copyright in the inherited simulation belongs to its original authors,
+Gazi Jarin <https://github.com/gazijarin> and
+Raiyan Rahman <https://github.com/RaiyanRahman>.
+
+The upstream repository publishes NO licence (`license: null`, no LICENSE file).
+Its source is therefore "all rights reserved" by its authors. Nothing in this
+repository relicenses that code, and no MIT grant is asserted over it.
+
+
+WHAT IS LICENSED, AND HOW
+-------------------------
+
+Original work created for this fork (Mohammed Unais) is MIT licensed. The full
+MIT text is in LICENSES/MIT.txt and applies only to:
+
+    index.html
+    assets/css/style.css
+    js/site/main.js
+    .github/workflows/deploy.yml
+    README.md
+    NOTICE.md
+    LICENSES/**
+    docs/**
+
+Not covered by that grant:
+
+    js/simulation/**   inherited from gazijarin/AdamAI and modified; remains
+                       under its original authors' copyright
+    libraries/**       third-party: p5.js and addons, LGPL-2.1
+                       (see libraries/README.md)
+
+
+WHY THE MIT TEXT IS NOT IN THIS FILE
+------------------------------------
+
+GitHub's licence detector reads a root LICENSE file and applies one label to
+the whole repository. Putting the MIT text here would make GitHub advertise
+this repository as MIT-licensed, which would misrepresent the inherited
+simulation. The MIT grant therefore lives in LICENSES/MIT.txt, scoped to the
+files listed above, and this file records the split.
+
+If you reuse this project: treat the two halves separately. The interface,
+instrumentation, documentation and CI are MIT — use them freely. The simulation
+core is not yours or mine to relicense; ask the upstream authors.
+
+
+QUESTIONS AND CONTACT
+---------------------
+
+Maintainer of this fork: Mohammed Unais <https://github.com/PyDeV1OpEr>
+
+For the provenance of every file, see NOTICE.md.

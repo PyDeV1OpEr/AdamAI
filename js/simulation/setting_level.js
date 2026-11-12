@@ -106,7 +106,6 @@ function setEdges() {
   // The outer walls.
   for (var i = 1; i< 21; i++) {
     for (var j = 1; j< 9; j++) {
-      console.log('i: ' + i + ' j: ' + j)
       if (!tiles[i][j].wall) {
         if (tiles[i+1][j].wall) {
           tiles[i][j].edges.push(1);

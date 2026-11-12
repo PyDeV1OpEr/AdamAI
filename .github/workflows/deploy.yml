@@ -1,0 +1,106 @@
+name: Deploy to GitHub Pages
+
+# Adam AI is a static site: there is no build step, so the workflow validates
+# the shipped tree and then publishes it. A failed validation never deploys.
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Validate static output
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Verify required files exist
+        run: |
+          set -euo pipefail
+          if [ ! -f .nojekyll ]; then
+            echo "::error file=.nojekyll::missing .nojekyll (GitHub Pages would run Jekyll)"
+            exit 1
+          fi
+          required=(
+            index.html
+            assets/css/style.css
+            js/site/main.js
+            js/simulation/sketch.js
+            js/simulation/Population.js
+            js/simulation/Player.js
+            js/simulation/Brain.js
+            js/simulation/setting_level.js
+            libraries/p5.js
+            libraries/p5.dom.js
+          )
+          for file in "${required[@]}"; do
+            if [ ! -s "$file" ]; then
+              echo "::error file=$file::missing or empty"
+              exit 1
+            fi
+          done
+
+      - name: Verify every script and stylesheet referenced by index.html exists
+        run: |
+          set -euo pipefail
+          missing=0
+          while IFS= read -r asset; do
+            if [ ! -f "$asset" ]; then
+              echo "::error file=index.html::referenced asset not found: $asset"
+              missing=1
+            fi
+          done < <(grep -oE '(src|href)="[^"#]+"' index.html \
+                    | sed -E 's/^(src|href)="//; s/"$//' \
+                    | grep -vE '^(https?:|mailto:|data:)' || true)
+          exit "$missing"
+
+      - name: Verify asset paths are relative (project sites are served from /AdamAI/)
+        run: |
+          set -euo pipefail
+          if grep -nE '(src|href)="/[^/]' index.html; then
+            echo "::error file=index.html::root-absolute path found; it would 404 under the /AdamAI/ base path"
+            exit 1
+          fi
+          echo "All asset paths are relative."
+
+      - name: Verify the simulation is loaded, not stubbed
+        run: |
+          set -euo pipefail
+          for f in Brain Node Player Population Dot Coin Solid Tile setting_level sketch; do
+            grep -q "js/simulation/$f.js" index.html \
+              || { echo "::error::index.html no longer loads js/simulation/$f.js"; exit 1; }
+          done
+
+  deploy:
+    name: Deploy
+    needs: validate
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

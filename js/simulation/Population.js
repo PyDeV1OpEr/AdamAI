@@ -56,7 +56,6 @@ class Population {
         return false;
       }
     }
-    print("bah:");
     return true;
   }
 
