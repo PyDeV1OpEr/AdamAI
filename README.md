@@ -15,9 +15,9 @@ real objective.
 https://github.com/PyDeV1OpEr/AdamAI
 
 > **Deployed and verified.** GitHub Pages serves the `master` branch of this repository through
-> `.github/workflows/deploy.yml`. First deployed 12 November 2026 and checked in a browser:
-> 500 agents evolving at ~60 fps, zero console errors, zero failed requests, responsive at both
-> 390 px and 1440 px.
+> `.github/workflows/deploy.yml`. Deployed 12 November 2026 and redeployed 15 November 2026 after the
+> identity and documentation pass; checked on the live URL each time: 500 agents evolving, ~60 fps
+> measured, zero console errors, zero failed requests, responsive at both 390 px and 1440 px.
 
 ---
 
@@ -528,7 +528,8 @@ performed — there are no invented results.
 | Navigation and fragments | Clicked each nav link; resolved every `href="#…"` against element ids | all six fragments resolve, no dead anchors |
 | Toggle state exposure | Read `aria-pressed` on **Replay best** / **Human mode** while active and after exit | `true` while active, `false` on exit |
 | GitHub Pages base path | Served the tree from `/AdamAI/` locally and loaded it | 200s, stylesheet applied, simulation ran, no 404s |
-| **Live deployment** | Loaded https://pydev1oper.github.io/AdamAI/ in headless Chrome over CDP | all assets 200, 500 agents evolving, 0 console errors, 0 failed requests |
+| **Live deployment** | Loaded https://pydev1oper.github.io/AdamAI/ in Chrome over CDP after the redeploy | 18/18 requests 200, simulation advancing, 2.08 ms/frame, 0 console errors |
+| Repository metadata | `gh api repos/PyDeV1OpEr/AdamAI` | genuine fork of `gazijarin/AdamAI`, default branch `master`, Pages `build_type: workflow`, homepage and description set, licence detected as MIT |
 | Workflow validation logic | Ran the workflow's shell gates locally | all four gates pass on this tree |
 
 ### Not performed
