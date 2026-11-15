@@ -150,6 +150,14 @@
       el.pause.textContent = paused ? 'Resume' : 'Pause';
     }
 
+    if (el.replay) {
+      el.replay.setAttribute('aria-pressed', mode === 'replay' ? 'true' : 'false');
+    }
+
+    if (el.human) {
+      el.human.setAttribute('aria-pressed', mode === 'human' ? 'true' : 'false');
+    }
+
     if (latest && latest.solutionFound && latest.minStep && !isNaN(latest.minStep)) {
       if (el.solvedBanner) {
         el.solvedBanner.hidden = false;

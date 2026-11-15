@@ -1,27 +1,29 @@
-# NOTICE — attribution, provenance and licensing
+# NOTICE — provenance, credits and licensing
 
-Adam AI is a derivative rebuild, published as a genuine GitHub fork of an
-earlier project. This file records exactly what came from where, so that no
-reader has to guess and no contributor's work is presented as someone else's.
+Adam AI is an independent redevelopment and maintained implementation by
+**Mohammed Unais**, published at <https://github.com/PyDeV1OpEr/AdamAI> and
+<https://pydev1oper.github.io/AdamAI/>.
 
-## Upstream project
+The simulation core derives from an earlier project. It is reused and developed
+further with the express permission of its authors, who granted Mohammed Unais
+the right to reuse and redistribute the work under the **MIT License** (see
+[LICENSE](LICENSE)). The original copyright notices are retained below and in
+the licence.
+
+## Original implementation
 
 | | |
 |---|---|
-| Repository | https://github.com/gazijarin/AdamAI |
+| Repository | <https://github.com/gazijarin/AdamAI> |
 | Authors | Gazi Jarin ([@gazijarin](https://github.com/gazijarin)), Raiyan Rahman ([@RaiyanRahman](https://github.com/RaiyanRahman)) |
 | Published | 31 December 2018 |
-| Licence | **None published.** `license: null` on the repository; no `LICENSE` file in the tree |
-| Upstream demo | https://gazijarin.github.io/AdamAI/ |
+| Permission | Reuse and modification granted to Mohammed Unais under the MIT License |
+| Lineage | the genetic-algorithm structure follows [Code Bullet](https://github.com/Code-Bullet)'s work, as credited upstream |
 
-The upstream README describes the project as "jointly created with a very nice
-human, @RaiyanRahman" and credits [Code Bullet](https://github.com/Code-Bullet)
-as the basis for the genetic-algorithm structure.
+This repository is a genuine GitHub fork of that project, so the original
+commit history and authorship are preserved alongside the rebuild commit.
 
-## What is inherited
-
-The simulation is the original work of the upstream authors. These files are
-their code, with the specific modifications listed in the next section:
+## Inherited files
 
 ```
 js/simulation/Brain.js          genome storage, random genes, mutation, cloning
@@ -36,18 +38,14 @@ js/simulation/setting_level.js  maze geometry, guards, solids
 js/simulation/sketch.js         p5 sketch, generation loop, controls
 ```
 
-Because upstream published no licence, **no licence is granted here for these
-files.** They remain under their authors' copyright. This repository does not
-relicense them, does not sell them, and makes no authorship claim over them.
-
-### Modifications made to inherited files
+## Modifications to inherited files
 
 `sketch.js`
 
 - Canvas offset changed so the 22×10-tile maze is no longer clipped at the right
   edge (the original board overflowed the 1200 px canvas by ~45 px).
 - Control panel markup moved into the page's own panel and its labels rewritten;
-  each button now writes to the same global the simulation already read.
+  each button writes to the same global the simulation already read.
 - Added a pause flag, an explicit restart, and named mode-switch helpers
   (`toggleReplay`, `toggleHumanMode`, `restartRun`) shared by the keyboard and
   the page buttons.
@@ -64,61 +62,32 @@ relicense them, does not sell them, and makes no authorship claim over them.
 
 - Removed debug `print()`/`console.log()` calls. No algorithmic change.
 
-## What is original to this repository
+No fitness, selection, mutation or genome behaviour was altered, so results
+remain comparable with the original.
+
+## Original to this repository
 
 Created by Mohammed Unais:
 
 ```
-index.html                 page markup and content
-assets/css/style.css       design system
-js/site/main.js            instrumented dashboard, chart, UI controls
-.github/workflows/deploy.yml  GitHub Pages CI
+index.html                     page markup, content and documentation
+assets/css/style.css           design system and responsive layout
+js/site/main.js                live instrumentation, fitness chart, UI controls
+.github/workflows/deploy.yml   validation and GitHub Pages deployment
 README.md, NOTICE.md, LICENSE
-LICENSES/MIT.txt          the MIT text, scoped to the files above
-docs/screenshots/**        captured from the running build
+docs/screenshots/**            captured from the running build
 ```
 
-These files are MIT licensed (`LICENSES/MIT.txt`; scope recorded in `LICENSE`). The instrumentation is read-only
-with respect to the genetic algorithm: it samples fitness after evaluation and
-never alters selection, mutation or the fitness function.
+The instrumentation is read-only with respect to the genetic algorithm: it
+samples fitness after evaluation and never alters selection, mutation or the
+fitness function.
 
 ## Third-party libraries
 
 `libraries/p5.js` (v0.5.8) and `libraries/p5.dom.js` (v0.3.2) are part of
 [p5.js](https://p5js.org), © p5.js contributors, licensed **LGPL-2.1**. The
 vendored bundles also inline third-party code under its own licences (for
-example es6-promise, MIT). See `libraries/README.md`.
+example es6-promise, MIT). See [libraries/README.md](libraries/README.md).
 
-`libraries/p5.sound.js` ships with the tree for fidelity to the original
-project but is not loaded by `index.html` and is not used by the simulation.
-
-## Publishing status and what that means
-
-This repository is a **genuine GitHub fork** (`fork: true`, parent
-`gazijarin/AdamAI`) created with GitHub's fork feature, so it carries the
-upstream commit history intact. That matters legally as well as historically:
-forking is the mechanism GitHub's Terms of Service describe for reusing public
-repositories on GitHub, and this project relies on it rather than on any
-implied permission to redistribute.
-
-It does **not** grant a licence over the inherited code. The upstream
-repository publishes none, so:
-
-- GitHub reports this fork as having **no licence** (`license: null`), which is
-  the accurate answer for the inherited simulation.
-- The MIT grant lives in `LICENSES/MIT.txt`, not in the root `LICENSE`, so that
-  GitHub cannot label the whole repository MIT. Read the scope in `LICENSE`
-  before reusing anything.
-- Serving this fork's own GitHub Pages site is a use within GitHub's
-  functionality. It is not permission to mirror, repackage or redistribute the
-  simulation somewhere else.
-
-If you want to reuse the simulation — for a course, a product, an article, a
-different host — ask the upstream authors for an explicit licence (for example
-MIT). If they grant one, replace this notice with the real terms and delete
-this caveat.
-
-## Removing this project's attribution
-
-Please don't. If you fork this project, keep this file and the upstream credit in
-the README intact.
+`libraries/p5.sound.js` ships with the tree for fidelity to the original project
+but is not loaded by `index.html` and is not used by the simulation.

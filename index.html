@@ -4,12 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Adam AI — Genetic Algorithm Maze Navigation</title>
-  <meta name="description" content="Adam AI evolves a population of artificial agents that learn to navigate a hostile maze through fitness-proportional selection, elitism and mutation. A browser-native genetic algorithm simulation.">
+  <meta name="description" content="Adam AI is an interactive genetic algorithm simulation by Mohammed Unais: 500 agents evolve to navigate a guarded maze through fitness-proportional selection, elitism and mutation. Runs entirely in the browser.">
   <meta name="author" content="Mohammed Unais">
   <meta name="theme-color" content="#0a0b0d">
   <meta property="og:title" content="Adam AI — Genetic Algorithm Maze Navigation">
   <meta property="og:description" content="Watch a genetic algorithm learn a maze in your browser: 500 agents per generation, fitness-proportional selection, elitism and mutation.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pydev1oper.github.io/AdamAI/">
+  <meta property="og:site_name" content="Adam AI">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0b0d'/%3E%3Cpath d='M7 23 13 9l4 8 2-4 6 10' fill='none' stroke='%2346e0b0' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -29,9 +31,10 @@
       </a>
       <nav class="site-nav" aria-label="Sections">
         <a href="#simulation">Simulation</a>
-        <a href="#how-it-works">How it works</a>
+        <a href="#evolution">Evolution</a>
+        <a href="#how-it-works">Algorithm</a>
         <a href="#architecture">Architecture</a>
-        <a href="#notes">Notes</a>
+        <a href="#about">About</a>
       </nav>
       <a class="repo-link" href="https://github.com/PyDeV1OpEr/AdamAI" rel="noopener">
         <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A7.99 7.99 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
@@ -46,10 +49,10 @@
         <p class="eyebrow">Genetic algorithm &middot; evolutionary computation &middot; browser-native</p>
         <h1>An agent that learns the maze<br class="wide"> without a teacher.</h1>
         <p class="lede">
-          Adam AI runs a genetic algorithm in your browser. A population of artificial agents is
-          generated at random, scored on how far it gets through a guarded maze, then bred —
-          highest fitness first — with small random mutations. Nobody programmes the route.
-          The route is discovered.
+          Adam AI is an interactive evolutionary simulation by <strong>Mohammed Unais</strong>.
+          A population of 500 agents is generated at random, scored on how far it gets through a
+          guarded maze, then bred — highest fitness first — with small random mutations. No route is
+          programmed here. The route is discovered, generation by generation, in the browser.
         </p>
 
         <div class="hero-actions">
@@ -68,11 +71,11 @@
         </dl>
 
         <p class="provenance">
-          Original implementation by
+          Developed and maintained by <strong>Mohammed Unais</strong>. Built on an original
+          genetic-algorithm implementation by
           <a href="https://github.com/gazijarin" rel="noopener">Gazi Jarin</a> and
-          <a href="https://github.com/RaiyanRahman" rel="noopener">Raiyan Rahman</a> (2018, no licence published).
-          This build — interface, instrumentation, documentation and deployment — is maintained by
-          <strong>Mohammed Unais</strong>. See <a href="#notes">attribution</a>.
+          <a href="https://github.com/RaiyanRahman" rel="noopener">Raiyan Rahman</a>, reused with
+          permission under the MIT licence. See <a href="#about">credits</a>.
         </p>
       </div>
     </section>
@@ -99,8 +102,8 @@
               </div>
               <div class="toolbar-actions">
                 <button type="button" class="btn btn-small" id="btn-pause" aria-pressed="false">Pause</button>
-                <button type="button" class="btn btn-small" id="btn-replay">Replay best</button>
-                <button type="button" class="btn btn-small" id="btn-human">Human mode</button>
+                <button type="button" class="btn btn-small" id="btn-replay" aria-pressed="false">Replay best</button>
+                <button type="button" class="btn btn-small" id="btn-human" aria-pressed="false">Human mode</button>
                 <button type="button" class="btn btn-small btn-ghost" id="btn-restart">Restart run</button>
               </div>
             </div>
@@ -158,10 +161,96 @@
       </div>
     </section>
 
+    <section id="evolution" class="section">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">02 — Learning cycle</p>
+          <h2>A random population becomes a route</h2>
+          <p class="section-sub">
+            No agent is told the answer, and no agent is told that it failed. Selection is the only
+            signal: whatever travels further is copied more often, so small random edits accumulate
+            into a path through the maze.
+          </p>
+        </header>
+
+        <ol class="pipeline">
+          <li>
+            <span class="stage">Stage 01</span>
+            <h3>Initialise</h3>
+            <p>500 genomes, each ten random moves drawn from nine directions. Every agent starts on the same tile.</p>
+          </li>
+          <li>
+            <span class="stage">Stage 02</span>
+            <h3>Execute</h3>
+            <p>Genomes replay in one shared maze, each direction held for six frames. Walls, guards and checkpoints act on all of them equally.</p>
+          </li>
+          <li>
+            <span class="stage">Stage 03</span>
+            <h3>Evaluate</h3>
+            <p>Each agent is scored by its distance to the next checkpoint plus the precomputed route that remains from there to the goal.</p>
+          </li>
+          <li>
+            <span class="stage">Stage 04</span>
+            <h3>Select</h3>
+            <p>A roulette wheel over the fitness sum. A better genome gets a larger slice of the wheel — never a guaranteed one.</p>
+          </li>
+          <li>
+            <span class="stage">Stage 05</span>
+            <h3>Mutate</h3>
+            <p>The champion is cloned unmutated. Every other child redraws genes at <code>mutationRate</code>, weighted around a recent death.</p>
+          </li>
+          <li>
+            <span class="stage">Stage 06</span>
+            <h3>Evolve</h3>
+            <p>Every five generations each genome gains five moves, so the search extends only as fast as prefixes are solved.</p>
+          </li>
+        </ol>
+
+        <div class="evolution-grid">
+          <div class="panel">
+            <h3 class="panel-title">What improvement actually looks like</h3>
+            <p class="panel-prose">
+              The first generation is noise: ten random moves from the corner, almost always ending
+              against a wall. What survives is only what happens to drift further. Fitness then rises
+              in small, monotone steps as longer genomes keep the successful prefixes intact.
+            </p>
+            <table class="module-table">
+              <thead><tr><th>Generation</th><th>Move budget</th><th>Best-ever fitness</th></tr></thead>
+              <tbody>
+                <tr><td>10</td><td>20</td><td>3.05e-14</td></tr>
+                <tr><td>30</td><td>40</td><td>4.68e-14</td></tr>
+                <tr><td>50</td><td>60</td><td>6.82e-14</td></tr>
+                <tr><td>68</td><td>75</td><td>7.92e-14</td></tr>
+              </tbody>
+            </table>
+            <p class="panel-note">
+              A 60-individual verification run, stepped frame by frame in headless Chrome. These are
+              recorded values, not illustrative ones.
+            </p>
+          </div>
+
+          <div class="panel">
+            <h3 class="panel-title">Why it is slow</h3>
+            <p class="panel-prose">
+              The genome is open-loop. It cannot see the guard, the wall or the checkpoint ahead — it
+              replays a sequence of moves and dies when the sequence runs out. Improvement therefore
+              comes from length and timing rather than strategy, and every checkpoint pushes the goal
+              further away again.
+            </p>
+            <ul class="bullet-list evolution-list">
+              <li>Roughly 50 generations to the first checkpoint at 500 individuals, as reported upstream.</li>
+              <li>Later checkpoints take substantially longer: each gate enlarges the search space.</li>
+              <li>One elite slot and no crossover mean the population looks converged long before it solves the maze.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="how-it-works" class="section">
       <div class="wrap">
         <header class="section-head">
-          <p class="eyebrow">02 — The algorithm</p>
+          <p class="eyebrow">03 — The algorithm</p>
           <h2>What actually happens, cycle by cycle</h2>
           <p class="section-sub">
             This is a genetic algorithm, not deep learning and not reinforcement learning. There
@@ -262,7 +351,7 @@
     <section id="architecture" class="section">
       <div class="wrap">
         <header class="section-head">
-          <p class="eyebrow">03 — Architecture</p>
+          <p class="eyebrow">04 — Architecture</p>
           <h2>How the code is put together</h2>
           <p class="section-sub">
             Static HTML, CSS and JavaScript. No build step, no package manager, no server, no API
@@ -329,59 +418,141 @@
       </div>
     </section>
 
-    <section id="notes" class="section">
+    <section id="engineering" class="section">
       <div class="wrap">
         <header class="section-head">
-          <p class="eyebrow">04 — Limits, attribution &amp; licence</p>
-          <h2>What this project is not</h2>
+          <p class="eyebrow">05 — Engineering</p>
+          <h2>What building this involved</h2>
+          <p class="section-sub">
+            The genetic algorithm and the maze are inherited. The interface, the instrumentation that
+            makes the run legible, and the pipeline that ships it are the work of this rebuild.
+          </p>
         </header>
+
+        <div class="highlight-grid">
+          <article class="highlight">
+            <span class="step-index">01</span>
+            <h3>Simulation in the browser</h3>
+            <p>500 agents evolve per generation on canvas 2D at a measured ~60 fps, with no server, no build step and no external requests at runtime.</p>
+          </article>
+          <article class="highlight">
+            <span class="step-index">02</span>
+            <h3>Genetic operators</h3>
+            <p>Roulette-wheel selection over the fitness sum, a single unmutated elite slot, per-gene mutation and a move budget that grows on a fixed schedule.</p>
+          </article>
+          <article class="highlight">
+            <span class="step-index">03</span>
+            <h3>Read-only instrumentation</h3>
+            <p>The dashboard hooks in after <code>calculateFitness()</code> and samples generation, best and mean fitness, budget and checkpoints without writing back into selection.</p>
+          </article>
+          <article class="highlight">
+            <span class="step-index">04</span>
+            <h3>Hand-drawn charting</h3>
+            <p>The fitness chart is about 120 lines of canvas 2D with a log<sub>10</sub> axis — written because a charting library was not worth the payload for one line chart.</p>
+          </article>
+          <article class="highlight">
+            <span class="step-index">05</span>
+            <h3>Interaction design</h3>
+            <p>Pause, replay, human control and restart share one state machine with the keyboard shortcuts, so a button and a key can never disagree about the current mode.</p>
+          </article>
+          <article class="highlight">
+            <span class="step-index">06</span>
+            <h3>Delivery that fails closed</h3>
+            <p>A GitHub Actions job checks required files, asset references and base-path safety before publishing, so a broken tree cannot reach Pages.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">06 — Project</p>
+          <h2>Project information &amp; credits</h2>
+          <p class="section-sub">
+            Adam AI is an independent redevelopment and maintained implementation by Mohammed Unais.
+            It explores genetic algorithms and evolutionary computation through an interactive
+            browser-based simulation.
+          </p>
+        </header>
+
+        <div class="story-grid">
+          <div class="story-copy">
+            <h3 class="story-title">Developed and maintained by Mohammed Unais</h3>
+            <p>
+              I built Adam AI to make evolutionary computation observable. Most explanations stop at
+              a diagram of selection and mutation; the interesting part is what a population does
+              under real selection pressure — how quickly it converges, where it stalls, and why an
+              open-loop genome can memorise a route without ever understanding the maze.
+            </p>
+            <p>
+              My work is the redevelopment: reading the inherited algorithm line by line, fixing the
+              defects that broke the demo, instrumenting the population so every displayed number is
+              measured rather than decorative, and wiring up a deployment that validates itself. The
+              genetic algorithm is not mine; the presentation, analysis and engineering around it are.
+            </p>
+          </div>
+          <dl class="fact-list panel">
+            <div><dt>Role</dt><dd>Redevelopment, interface, instrumentation, documentation and deployment</dd></div>
+            <div><dt>Focus</dt><dd>Evolutionary computation and front-end engineering</dd></div>
+            <div><dt>Stack</dt><dd>JavaScript · p5.js · CSS · GitHub Actions</dd></div>
+            <div><dt>GitHub</dt><dd><a href="https://github.com/PyDeV1OpEr" rel="noopener">@PyDeV1OpEr</a></dd></div>
+          </dl>
+        </div>
 
         <div class="notes-grid">
           <div class="panel">
             <h3 class="panel-title">Known limitations</h3>
             <ul class="bullet-list">
-              <li>Converges prematurely: one elite slot and no diversity pressure collapse the population onto a single genome.</li>
-              <li>Genome is open-loop — it cannot react to state, so it must memorise timing rather than navigate.</li>
-              <li>Single hand-authored level; no generalisation to unseen mazes.</li>
-              <li>Fitness scaling is <code>1/d²</code> then squared, so early generations are numerically tiny and flat on a linear axis.</li>
-              <li>Guard deaths are rewarded, not penalised: the distance estimate is scaled by 0.9 before inverting, so dying close to a checkpoint scores higher. Preserved for comparability with the original.</li>
-              <li>Population changes apply from the next generation, not retroactively.</li>
+              <li>Open-loop genome: it cannot react to state, so it memorises timing rather than navigating.</li>
+              <li>One hand-authored level; no generalisation to an unseen maze.</li>
+              <li>Premature convergence — one elite slot, no crossover and no diversity pressure collapse the population onto similar paths.</li>
+              <li>Guard deaths are rewarded rather than penalised: the distance estimate is scaled by 0.9 before inverting, so dying close to a checkpoint scores higher. Preserved for comparability with the original.</li>
+              <li>Fitness is <code>1/d²</code> then squared, so early generations are numerically tiny and flat on a linear axis.</li>
               <li>Expect roughly 50 generations to the first checkpoint; later checkpoints take substantially longer.</li>
             </ul>
           </div>
 
           <div class="panel">
-            <h3 class="panel-title">Attribution</h3>
+            <h3 class="panel-title">Credits</h3>
             <p>
-              The simulation — <code>Brain</code>, <code>Player</code>, <code>Population</code>,
-              the maze and the p5 sketch — was created by
+              <strong>Original simulation</strong> — the genetic algorithm, the maze and the p5
+              sketch were created by
               <a href="https://github.com/gazijarin" rel="noopener">Gazi Jarin</a> with
               <a href="https://github.com/RaiyanRahman" rel="noopener">Raiyan Rahman</a> and
-              published at <a href="https://github.com/gazijarin/AdamAI" rel="noopener">gazijarin/AdamAI</a>
-              in 2018. The genetic-algorithm structure follows
-              <a href="https://github.com/Code-Bullet" rel="noopener">Code Bullet</a>’s work.
+              published as <a href="https://github.com/gazijarin/AdamAI" rel="noopener">gazijarin/AdamAI</a>
+              in December 2018. Reused and developed further with their permission. The
+              genetic-algorithm structure follows
+              <a href="https://github.com/Code-Bullet" rel="noopener">Code Bullet</a>’s work, as
+              credited upstream.
             </p>
             <p>
-              This repository is a derivative rebuild: a redesigned interface, live instrumentation,
-              documentation and CI deployment. Those additions are by
-              <strong>Mohammed Unais</strong>. No original-authorship claim is made over the
-              inherited code.
+              <strong>This implementation</strong> — interface, design system, live instrumentation,
+              analytics, defect fixes, documentation and deployment by
+              <strong>Mohammed Unais</strong>. The inherited simulation remains the work of its
+              original authors; no original-authorship claim is made over it.
+            </p>
+            <p class="panel-note">
+              Rendering by <a href="https://p5js.org" rel="noopener">p5.js</a> 0.5.8, © p5.js
+              contributors, LGPL-2.1. File-by-file provenance in
+              <a href="NOTICE.md">NOTICE.md</a>.
             </p>
           </div>
 
           <div class="panel">
             <h3 class="panel-title">Licence</h3>
             <p>
-              The upstream repository publishes <strong>no licence</strong>, so the inherited code
-              remains under its authors’ copyright; this repository does not relicense it. It is a
-              genuine GitHub fork, which is why the original commit history and attribution are
-              intact. Mohammed Unais’s own contributions (site, instrumentation, documentation, CI)
-              are MIT licensed.
+              Adam AI is released under the <strong>MIT licence</strong> — © 2018 Gazi Jarin and
+              Raiyan Rahman, © 2026 Mohammed Unais. The original implementation is reused with its
+              authors’ permission, and their copyright notice is retained in the licence text.
+            </p>
+            <p>
+              Third-party code keeps its own terms: p5.js and its addons are
+              <strong>LGPL-2.1</strong>.
             </p>
             <p class="panel-note">
-              See <a href="LICENSE">LICENSE</a> for the scope,
-              <a href="LICENSES/MIT.txt">LICENSES/MIT.txt</a> for the MIT text, and
-              <a href="NOTICE.md">NOTICE.md</a> for the file-by-file breakdown.
+              Full terms in <a href="LICENSE">LICENSE</a>; provenance and the modification record in
+              <a href="NOTICE.md">NOTICE.md</a>.
             </p>
           </div>
         </div>
@@ -394,15 +565,16 @@
       <div>
         <p class="footer-brand">Adam AI</p>
         <p class="footer-note">
-          Genetic algorithm maze navigation. Built on the original AdamAI by Gazi Jarin and
-          Raiyan Rahman; derivative rebuild maintained by Mohammed Unais.
+          An interactive genetic algorithm simulation, developed and maintained by
+          <strong>Mohammed Unais</strong>. Built on the original AdamAI simulation by Gazi Jarin and
+          Raiyan Rahman, reused with permission under the MIT licence.
         </p>
       </div>
       <nav class="footer-links" aria-label="Project links">
         <a href="https://github.com/PyDeV1OpEr/AdamAI" rel="noopener">Repository</a>
-        <a href="https://github.com/gazijarin/AdamAI" rel="noopener">Upstream</a>
+        <a href="https://pydev1oper.github.io/AdamAI/" rel="noopener">Live site</a>
         <a href="LICENSE">Licence</a>
-        <a href="NOTICE.md">Attribution</a>
+        <a href="NOTICE.md">Credits</a>
       </nav>
     </div>
   </footer>

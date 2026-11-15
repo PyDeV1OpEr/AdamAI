@@ -786,6 +786,110 @@ kbd {
   line-height: 1.65;
 }
 
+/* ---------------- evolution pipeline ---------------- */
+
+.pipeline {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.pipeline li {
+  position: relative;
+  background: var(--bg-raised);
+  padding: 22px 16px 20px;
+}
+
+.pipeline li::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  opacity: var(--step-opacity, 0.2);
+}
+
+.pipeline li:nth-child(1) { --step-opacity: 0.16; }
+.pipeline li:nth-child(2) { --step-opacity: 0.3; }
+.pipeline li:nth-child(3) { --step-opacity: 0.45; }
+.pipeline li:nth-child(4) { --step-opacity: 0.6; }
+.pipeline li:nth-child(5) { --step-opacity: 0.78; }
+.pipeline li:nth-child(6) { --step-opacity: 1; }
+
+.pipeline .stage {
+  display: block;
+  margin-bottom: 9px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.pipeline h3 {
+  font-size: 15px;
+  margin-bottom: 7px;
+}
+
+.pipeline p {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.evolution-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+  align-items: start;
+}
+
+.panel-prose {
+  margin-bottom: 14px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--text-soft);
+}
+
+.evolution-list {
+  margin-top: 14px;
+}
+
+/* ---------------- engineering highlights ---------------- */
+
+.highlight-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.highlight {
+  background: var(--bg-raised);
+  padding: 22px;
+}
+
+.highlight h3 {
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.highlight p {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--text-soft);
+}
+
 /* ---------------- architecture ---------------- */
 
 .arch-grid {
@@ -944,6 +1048,52 @@ kbd {
   margin-bottom: 3px;
 }
 
+/* ---------------- project story ---------------- */
+
+.story-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+  align-items: start;
+}
+
+.story-title {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.story-copy p {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--text-soft);
+}
+
+.story-copy p + p {
+  margin-top: 12px;
+}
+
+.fact-list {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+}
+
+.fact-list dt {
+  margin-bottom: 3px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.fact-list dd {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
 /* ---------------- notes ---------------- */
 
 .notes-grid {
@@ -1015,6 +1165,11 @@ kbd {
   line-height: 1.7;
 }
 
+.footer-note strong {
+  font-weight: 600;
+  color: var(--text-soft);
+}
+
 .footer-links {
   display: flex;
   flex-wrap: wrap;
@@ -1057,6 +1212,18 @@ kbd {
   .callouts {
     grid-template-columns: minmax(0, 1fr);
   }
+
+  .pipeline {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .evolution-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .highlight-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 860px) {
@@ -1070,6 +1237,10 @@ kbd {
 
   .stack-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .story-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -1128,6 +1299,14 @@ kbd {
 
   .chart-box canvas {
     height: 150px;
+  }
+
+  .pipeline {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .highlight-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

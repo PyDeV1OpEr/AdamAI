@@ -1,19 +1,23 @@
 # Adam AI
 
-**An interactive genetic algorithm that learns to solve a guarded maze — in the browser, with no
-neural network, no training data and no server.**
+**Developed and maintained by [Mohammed Unais](https://github.com/PyDeV1OpEr).** An interactive
+genetic algorithm that learns to solve a guarded maze — in the browser, with no neural network, no
+training data and no server.
 
-Adam AI evolves a population of agents through fitness-proportional selection, elitism and
-mutation. Each agent carries a genome that is literally a sequence of moves; the ones that travel
-further earn more offspring, and small random perturbations accumulate into a route through a maze
-patrolled by guards. Open the site, and you are watching natural selection run at 60 frames per
-second against a real objective.
+Adam AI is an independent redevelopment of an earlier evolutionary simulation. It evolves a
+population of agents through fitness-proportional selection, elitism and mutation. Each agent
+carries a genome that is literally a sequence of moves; the ones that travel further earn more
+offspring, and small random perturbations accumulate into a route through a maze patrolled by
+guards. Open the site, and you are watching natural selection run at 60 frames per second against a
+real objective.
 
-**Live site:** https://PyDeV1OpEr.github.io/AdamAI/
+**Live site:** https://pydev1oper.github.io/AdamAI/ · **Repository:**
+https://github.com/PyDeV1OpEr/AdamAI
 
-> **Status of the live link.** That URL is this repository's GitHub Pages target. It serves only
-> after the first successful run of the deploy workflow (see [Deployment](#deployment)); until
-> then it returns 404 and this note stays.
+> **Deployed and verified.** GitHub Pages serves the `master` branch of this repository through
+> `.github/workflows/deploy.yml`. First deployed 12 November 2026 and checked in a browser:
+> 500 agents evolving at ~60 fps, zero console errors, zero failed requests, responsive at both
+> 390 px and 1440 px.
 
 ---
 
@@ -50,7 +54,7 @@ second against a real objective.
 
 | | |
 |---|---|
-| Website | https://PyDeV1OpEr.github.io/AdamAI/ |
+| Website | https://pydev1oper.github.io/AdamAI/ |
 | Repository | https://github.com/PyDeV1OpEr/AdamAI |
 | Original project (forked from) | https://github.com/gazijarin/AdamAI |
 | Hosting | GitHub Pages (static, no backend) |
@@ -80,6 +84,11 @@ Captured from the running build, not mocked up.
 ---
 
 ## What this project is
+
+Adam AI is an independent redevelopment and maintained implementation by Mohammed Unais. It takes
+an existing genetic-algorithm simulation as its foundation and rebuilds everything around it — the
+interface, the live instrumentation, the documentation and the deployment pipeline — while leaving
+the evolutionary operators intact.
 
 A genetic algorithm (GA) is a search procedure inspired by selection in biology. You represent
 candidate solutions as strings, score them against an objective, then breed the high scorers with
@@ -436,10 +445,8 @@ AdamAI/
 │       └── deploy.yml          # validate + deploy to GitHub Pages
 ├── .gitignore
 ├── .nojekyll                   # serve files verbatim (no Jekyll)
-├── LICENSE                     # scope notice: what is and is not licensed
-├── LICENSES/
-│   └── MIT.txt                 # MIT text for this fork's own work only
-├── NOTICE.md                   # provenance, inherited vs original, third-party licences
+├── LICENSE                     # MIT licence, both copyright notices retained
+├── NOTICE.md                   # provenance, credits, third-party licences
 ├── README.md
 ├── index.html                  # the page: hero, simulation shell, docs, footer
 ├── assets/
@@ -468,8 +475,8 @@ AdamAI/
     └── screenshots/            # captured from the running build
 ```
 
-About 1,400 lines of simulation code (563 of them the p5 sketch and its controls), ~460 lines of
-instrumentation and ~1,140 lines of CSS; total repository ~2 MB, of which 1.3 MB is the vendored
+About 1,400 lines of simulation code (563 of them the p5 sketch and its controls), ~465 lines of
+instrumentation and ~1,320 lines of CSS; total repository ~2 MB, of which 1.3 MB is the vendored
 p5.js bundle.
 
 ---
@@ -516,8 +523,12 @@ performed — there are no invented results.
 | Collision detection | Observed agents blocked at walls and killed by guards across runs | consistent with `Solid.restrictMovement` |
 | Analytics accuracy | Compared dashboard values against live globals | dashboard reads the same objects, no divergence |
 | Responsive layout (desktop) | 1440 × 900 and 1440 × 1560 viewports | no horizontal overflow, canvas scales to 1130 px |
-| Responsive layout (mobile) | 390 × 844, 2× DPR | no overflow (`scrollWidth == innerWidth`), toolbar reflows |
-| GitHub Pages base path | Served the tree from `/AdamAI/` and loaded it | 200s, stylesheet applied, simulation ran, no 404s |
+| Responsive layout (mobile) | 390 × 844, 2× DPR | no overflow (`scrollWidth == innerWidth`), toolbar reflows to 2×2 |
+| Section layout | Computed grid columns at 1440 px and 390 px | evolution pipeline 6 → 2 columns, highlights 3 → 1, no overflow |
+| Navigation and fragments | Clicked each nav link; resolved every `href="#…"` against element ids | all six fragments resolve, no dead anchors |
+| Toggle state exposure | Read `aria-pressed` on **Replay best** / **Human mode** while active and after exit | `true` while active, `false` on exit |
+| GitHub Pages base path | Served the tree from `/AdamAI/` locally and loaded it | 200s, stylesheet applied, simulation ran, no 404s |
+| **Live deployment** | Loaded https://pydev1oper.github.io/AdamAI/ in headless Chrome over CDP | all assets 200, 500 agents evolving, 0 console errors, 0 failed requests |
 | Workflow validation logic | Ran the workflow's shell gates locally | all four gates pass on this tree |
 
 ### Not performed
@@ -610,7 +621,7 @@ and refuses to publish if the tree is inconsistent.
 
 ```mermaid
 flowchart LR
-    PUSH["push to main<br/>or manual dispatch"] --> V["validate job"]
+    PUSH["push to master<br/>or manual dispatch"] --> V["validate job"]
     V --> V1["required files present"]
     V1 --> V2["every referenced asset exists"]
     V2 --> V3["no root-absolute paths<br/>(breaks /AdamAI/ base path)"]
@@ -620,24 +631,28 @@ flowchart LR
     D --> LIVE["GitHub Pages"]
 ```
 
-### One-time repository setup
+### Repository setup (already done)
 
-1. **Settings → Pages → Build and deployment → Source: GitHub Actions.**
-   This is required; without it the workflow's deploy step has nowhere to publish.
-2. Push to `main` (or run the workflow manually from the Actions tab).
+Pages is configured for this repository with `build_type: workflow` — **Settings → Pages → Build
+and deployment → Source: GitHub Actions**. That is a one-time setting; after it, any push to
+`master` republishes automatically, and the workflow can also be run manually from the Actions tab
+(`workflow_dispatch`).
 
-The site is served from `https://PyDeV1OpEr.github.io/AdamAI/`. All asset paths in `index.html`
+If you fork this project yourself, you must set that Pages source in your own fork before the
+deploy step will succeed — the first push otherwise fails at *Configure Pages* with
+`Get Pages site failed`.
+
+The site is served from `https://pydev1oper.github.io/AdamAI/`. All asset paths in `index.html`
 are relative, which is why the `/AdamAI/` sub-path works without a build-time base-path setting — the
 workflow enforces that invariant on every run.
 
-### Suggested repository metadata
+### Repository metadata (set)
 
-Description: *An interactive genetic algorithm simulation exploring evolutionary learning,
-fitness-based selection, and autonomous maze navigation.*
-
-Topics: `genetic-algorithm`, `evolutionary-computation`, `artificial-intelligence`,
-`machine-learning`, `javascript`, `maze-solving`, `computational-intelligence`,
-`evolutionary-algorithms`, `p5js`, `github-pages`.
+| Field | Value |
+|---|---|
+| Description | *An interactive genetic algorithm simulation exploring evolutionary computation through real-time AI maze navigation.* |
+| Website | https://pydev1oper.github.io/AdamAI/ |
+| Topics | `genetic-algorithm`, `evolutionary-computation`, `artificial-intelligence`, `machine-learning`, `javascript`, `maze-solving`, `computational-intelligence`, `evolutionary-algorithms`, `p5js`, `github-pages` |
 
 ---
 
@@ -679,9 +694,9 @@ preserved for comparison.
 - **Preserving a working implementation beats rewriting it.** The temptation was to reimplement the
   GA cleanly. Keeping the original operators meant the demo is the original algorithm, and every
   claim in this README is checkable against inherited code.
-- **Licensing is part of engineering.** A public repository without a `LICENSE` file is not
-  "free to reuse"; handling that honestly (scoped licence, `NOTICE.md`) is part of shipping
-  responsibly.
+- **Licensing is part of engineering.** Redistributing inherited code needs an actual grant, not an
+  assumption. Recording that permission, retaining the original copyright notice and documenting
+  provenance is part of shipping responsibly.
 - **Static hosting shapes architecture.** A base-path-safe, dependency-free, build-free tree is
   what makes a Pages deployment reliable — and the workflow now enforces those invariants.
 
@@ -692,14 +707,14 @@ preserved for comparison.
 **Original implementation.** The simulation — the genetic algorithm, the maze, the p5 sketch — was
 created by [Gazi Jarin](https://github.com/gazijarin) with
 [Raiyan Rahman](https://github.com/RaiyanRahman) and published as
-[gazijarin/AdamAI](https://github.com/gazijarin/AdamAI) in December 2018. It is reused here as a
-the simulation core of a derivative rebuild in a separate repository; this project makes
-no claim to have independently developed it.
+[gazijarin/AdamAI](https://github.com/gazijarin/AdamAI) in December 2018. It is reused and developed
+further with the authors' permission, and remains their work; this project makes no claim to have
+independently developed it.
 
 **Algorithmic lineage.** The structure of the genetic algorithm follows
 [Code Bullet](https://github.com/Code-Bullet)'s work, as credited in the upstream README.
 
-**My contribution (Mohammed Unais).** The interface and design system, the live instrumentation and
+**Redevelopment (Mohammed Unais).** The interface and design system, the live instrumentation and
 fitness chart, the control bindings and mode helpers, the defect fixes and accessibility pass, the
 documentation, and the CI/deployment pipeline. Details in [NOTICE.md](NOTICE.md).
 
@@ -709,19 +724,19 @@ documentation, and the CI/deployment pipeline. Details in [NOTICE.md](NOTICE.md)
 
 ## Licence
 
-- **This repository's original work** (`index.html`, `assets/css/style.css`, `js/site/main.js`,
-  `.github/workflows/deploy.yml`, documentation and screenshots): **MIT**, © 2026 Mohammed Unais.
-  The grant is in [LICENSES/MIT.txt](LICENSES/MIT.txt); its scope is in [LICENSE](LICENSE).
-- **`js/simulation/**` — inherited from `gazijarin/AdamAI`, which publishes no licence.** It is
-  therefore *not* MIT-licensed here and remains under its authors' copyright. No relicensing is
-  implied.
-- **`libraries/**`** — p5.js and addons, **LGPL-2.1**.
+Adam AI is released under the **MIT License**: © 2018 Gazi Jarin and Raiyan Rahman, © 2026 Mohammed
+Unais. The original implementation is reused and redistributed with its authors' permission, and
+their copyright notice is retained in [LICENSE](LICENSE).
 
-This repository is a **genuine GitHub fork** of the upstream project, which is why it carries the
-original commit history and attribution. Read [LICENSE](LICENSE) for the scope,
-[LICENSES/MIT.txt](LICENSES/MIT.txt) for the MIT text, and [NOTICE.md](NOTICE.md) for the
-file-by-file breakdown. If you want to reuse the simulation outside GitHub, ask the upstream authors for a
-licence first.
+- **Inherited simulation** (`js/simulation/**`) — the genetic algorithm and the maze, originally by
+  Gazi Jarin and Raiyan Rahman, reused with permission under the MIT License.
+- **This rebuild** — interface, design system, instrumentation, documentation and deployment, by
+  Mohammed Unais, under the same licence.
+- **Third-party** (`libraries/**`) — p5.js 0.5.8 and addons, **LGPL-2.1**; see
+  [libraries/README.md](libraries/README.md).
+
+File-by-file provenance and the record of modifications to inherited files are in
+[NOTICE.md](NOTICE.md).
 
 ---
 
