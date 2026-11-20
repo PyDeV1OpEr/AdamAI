@@ -11,6 +11,8 @@ offspring, and small random perturbations accumulate into a route through a maze
 guards. Open the site, and you are watching natural selection run at 60 frames per second against a
 real objective.
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-2563EB?style=for-the-badge&logo=githubpages&logoColor=white)](https://pydev1oper.github.io/AdamAI/)
+
 **Live site:** https://pydev1oper.github.io/AdamAI/ · **Repository:**
 https://github.com/PyDeV1OpEr/AdamAI
 
